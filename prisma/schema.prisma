@@ -32,10 +32,11 @@ model Tecnologia {
 
 model User {
   id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nome     String
-  email    String
-  senha    String
-  createAt DateTime   @default(now())
-  updateAt DateTime   @updatedAt @default(now()) 
+  nome     String     @db.VarChar(125)
+  email    String     @db.VarChar(125)
+  senha    String     @db.VarChar(125)
+  birthAt  DateTime?  @db.Timestamp 
+  createAt DateTime   @db.Timestamp @default(now())
+  updateAt DateTime   @db.Timestamp @updatedAt @default(now()) 
   @@map("usuarios")
 }

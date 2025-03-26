@@ -1,38 +1,40 @@
 @baseUrl = http://localhost:3000
+@id = 7a4384b6-63cf-4264-bdec-9ab4c29d9582
 ###
 POST  {{baseUrl}}/users
 Content-Type: application/json
     
 {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password123"
+    "nome": "Alex Crocetti",
+    "email": "alex@crocetti.com.br",
+    "senha": "password123"
 }
 
 ###
 GET {{baseUrl}}/users
 
 ###
-GET {{baseUrl}}/users/1
+GET {{baseUrl}}/users/{{id}}
 
 
 ###
-PUT {{baseUrl}}/users/1
+PUT {{baseUrl}}/users/{{id}}
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "pass123456"
+    "nome": "Alex Crocetti",
+    "email": "alex@crocetti.com.br",
+    "senha": "passffsss"
+    
 }
 
 ###
-PATCH {{baseUrl}}/users/2
+PATCH {{baseUrl}}/users/{{id}}
 Content-Type: application/json
 
 {
-    "name": "John Doe"
+    "email": "alex@crocetti.com.br"
 }
 
 ###
-DELETE {{baseUrl}}/users/1
+DELETE {{baseUrl}}/users/e2eb959e-3c60-46b5-8ac0-1766c0285bc6
