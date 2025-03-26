@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model Projeto {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome        String
+  descricao   String
+  imagens     String[]
+  nivel       Int
+  destaque    Boolean       @default(false)
+  repositorio String
+  tipo        String
+  tecnologias Tecnologia[] @relation("ProjetoToTecnologia")
+  @@map("projetos")
+}
+
+model Tecnologia {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome      String
+  descricao String
+  imagem    String
+  destaque  Boolean    @default(false)
+  projetos  Projeto[] @relation("ProjetoToTecnologia")
+  @@map("tecnologias")
+}
+
+model User {
+  id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome     String
+  email    String
+  senha    String
+  createAt DateTime   @default(now())
+  updateAt DateTime   @updatedAt @default(now()) 
+  @@map("usuarios")
+}

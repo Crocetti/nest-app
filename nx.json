@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "format": {
+      "outputs": [
+        "{projectRoot}/build"
+      ],
+      "cache": true
+    },
+    "start": {
+      "outputs": [
+        "{projectRoot}/build"
+      ],
+      "cache": true
+    },
+    "start:dev": {
+      "outputs": [
+        "{projectRoot}/build"
+      ],
+      "cache": true
+    },
+    "start:debug": {
+      "outputs": [
+        "{projectRoot}/build"
+      ],
+      "cache": true
+    },
+    "start:prod": {
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "lint": {
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "eslint:lint"
+      }
+    }
+  ]
+}

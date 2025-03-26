@@ -1,0 +1,38 @@
+@baseUrl = http://localhost:3000
+###
+POST  {{baseUrl}}/users
+Content-Type: application/json
+    
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+}
+
+###
+GET {{baseUrl}}/users
+
+###
+GET {{baseUrl}}/users/1
+
+
+###
+PUT {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "pass123456"
+}
+
+###
+PATCH {{baseUrl}}/users/2
+Content-Type: application/json
+
+{
+    "name": "John Doe"
+}
+
+###
+DELETE {{baseUrl}}/users/1
