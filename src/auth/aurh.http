@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3000
 @id = 7a4384b6-63cf-4264-bdec-9ab4c29d9582
-@token = yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJkNDlkYmRkLTNiOTAtNGU4Yi05ZGQ0LTRlZWQ3Y2EzMjY2ZiIsIm5vbWUiOiJKb2huIERvZSIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTc0MzEwNzM5NCwiZXhwIjoxNzQzNzEyMTk0LCJhdWQiOiJ1c2VycyIsImlzcyI6ImxvZ2luIiwic3ViIjoiMmQ0OWRiZGQtM2I5MC00ZThiLTlkZDQtNGVlZDdjYTMyNjZmIn0.wdniZXPXi85vOaKH5BIVf1Blu7OBSgFRNnW9-eTBE70
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJkNDlkYmRkLTNiOTAtNGU4Yi05ZGQ0LTRlZWQ3Y2EzMjY2ZiIsIm5vbWUiOiJKb2huIERvZSIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTc0MzE2ODI2NywiZXhwIjoxNzQzNzczMDY3LCJhdWQiOiJ1c2VycyIsImlzcyI6ImxvZ2luIiwic3ViIjoiMmQ0OWRiZGQtM2I5MC00ZThiLTlkZDQtNGVlZDdjYTMyNjZmIn0.n6YPOyYulaQtvNjwTHDovdqu--HFCUAFueeHYGlUpgE
 ###
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
@@ -21,4 +21,12 @@ POST {{baseUrl}}/auth/reset
 
 ###
 POST {{baseUrl}}/auth/verify
+Authorization: Bearer {{token}}
+
+###
+POST {{baseUrl}}/auth/verify
+Authorization: Bearer ""
+
+###
+POST {{baseUrl}}/auth/amem
 Authorization: Bearer {{token}}

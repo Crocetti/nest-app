@@ -5,19 +5,17 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly authService: AuthService,
-  ) {}
+    constructor(private readonly authService: AuthService) {}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-      const {authorization} = context.switchToHttp().getRequest().headers;
-      if (!authorization) {
-        return false;
-      }
-      const token = authorization.split(' ')[1];
-      if (!token) {
-        return false;
-      }
-      const isValid = this.authService.isValidToken(token);
-      return isValid;
+        const request = context.switchToHttp().getRequest();
+        const { authorization } = request.headers;
+        try {
+            const data = this.authService.verifyToken((authorization ?? '').split(' ')[1]);
+            request.payload = data;
+            console.log(request.payload);
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 }

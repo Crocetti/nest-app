@@ -37,4 +37,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{baseUrl}}/users/e2eb959e-3c60-46b5-8ac0-1766c0285bc6
+DELETE {{baseUrl}}/users/{{id}}

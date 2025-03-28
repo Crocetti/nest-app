@@ -3,40 +3,44 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Projeto {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   nome        String
   descricao   String
   imagens     String[]
   nivel       Int
-  destaque    Boolean       @default(false)
+  destaque    Boolean      @default(false)
   repositorio String
   tipo        String
   tecnologias Tecnologia[] @relation("ProjetoToTecnologia")
+
   @@map("projetos")
 }
 
 model Tecnologia {
-  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   nome      String
   descricao String
   imagem    String
-  destaque  Boolean    @default(false)
+  destaque  Boolean   @default(false)
   projetos  Projeto[] @relation("ProjetoToTecnologia")
+
   @@map("tecnologias")
 }
 
 model User {
-  id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nome     String     @db.VarChar(125)
-  email    String     @db.VarChar(125)
-  senha    String     @db.VarChar(125)
-  birthAt  DateTime?  @db.Timestamp 
-  createAt DateTime   @db.Timestamp @default(now())
-  updateAt DateTime   @db.Timestamp @updatedAt @default(now()) 
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome     String    @db.VarChar(125)
+  email    String    @db.VarChar(125)
+  senha    String    @db.VarChar(125)
+  birthAt  DateTime? @db.Timestamp
+  createAt DateTime  @default(now()) @db.Timestamp
+  updateAt DateTime  @default(now()) @updatedAt @db.Timestamp
+
   @@map("usuarios")
 }

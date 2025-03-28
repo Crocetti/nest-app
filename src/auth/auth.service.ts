@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AuthRegisterDto } from './dto/auth-register-dto';
@@ -15,7 +14,7 @@ export class AuthService {
         private readonly userService: UserService,
     ) {}
 
-    async generateToken(user: User) {
+    generateToken(user: User) {
         return this.jwtService.sign(
             {
                 id: user.id,
@@ -31,14 +30,12 @@ export class AuthService {
         );
     }
 
-    async verifyToken(token: string) {
+    verifyToken(token: string) {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            const data = await this.jwtService.verify(token, {
+            const data = this.jwtService.verify(token, {
                 issuer: 'login',
                 audience: 'users',
             });
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return data;
         } catch (error) {
             throw new BadRequestException(error);
@@ -75,7 +72,10 @@ export class AuthService {
     async reset(password: string, token: string) {
         // TO DO: Validar o token
 
-        const id = `bc0f38fe-ec1a-4d51-a241-b490e5c5f103`;
+        const { id } = this.verifyToken(token);
+        if (!id) {
+            throw new UnauthorizedException('Token inválido');
+        }
 
         const user = await this.prisma.user.update({
             where: {
@@ -91,17 +91,17 @@ export class AuthService {
     async register(data: AuthRegisterDto) {
         const user = await this.userService.create(data);
         if (!user) {
-            throw new BadRequestException('Usuário já existe');
+            throw new BadRequestException('Dados do usuário inválidos');
         }
         return this.generateToken(user);
     }
 
-    async isValidToken(token: string) {
+    isValidToken(token: string) {
         try {
-            const data = this.jwtService.verify(token);
+            this.jwtService.verify(token);
             return true;
         } catch (e) {
             return false;
         }
-    }   
+    }
 }
