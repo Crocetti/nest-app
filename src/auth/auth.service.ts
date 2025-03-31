@@ -1,10 +1,14 @@
+import * as bcrypt from 'bcrypt';
+
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AuthRegisterDto } from './dto/auth-register-dto';
 import { JwtService } from '@nestjs/jwt';
+import { MailerService } from '@nestjs-modules/mailer';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
+import { link } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +16,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly prisma: PrismaService,
         private readonly userService: UserService,
+        private readonly mailerService: MailerService,
     ) {}
 
     generateToken(user: User) {
@@ -22,7 +27,7 @@ export class AuthService {
                 email: user.email,
             },
             {
-                expiresIn: '7d',
+                expiresIn: '7 days',
                 subject: String(user.id),
                 issuer: 'login',
                 audience: 'users',
@@ -32,7 +37,7 @@ export class AuthService {
 
     verifyToken(token: string) {
         try {
-            const data = this.jwtService.verify(token, {
+            const data = this.jwtService.verify<User>(token, {
                 issuer: 'login',
                 audience: 'users',
             });
@@ -46,10 +51,12 @@ export class AuthService {
         const user = await this.prisma.user.findFirst({
             where: {
                 email,
-                senha,
             },
         });
         if (!user) {
+            throw new UnauthorizedException(' email e/ou senha incorretos');
+        }
+        if (!(await bcrypt.compare(senha, user.senha))) {
             throw new UnauthorizedException(' email e/ou senha incorretos');
         }
         return this.generateToken(user);
@@ -65,27 +72,50 @@ export class AuthService {
             throw new UnauthorizedException(' email e/ou senha incorretos');
         }
         // TO DO: Enviar email com o token de reset
-
-        return this.generateToken(user);
+        const token = this.jwtService.sign(
+            {
+                id: user.id,
+            },
+            {
+                expiresIn: '30 minutes',
+                subject: String(user.id),
+                issuer: 'forget',
+                audience: 'users',
+            },
+        );
+        await this.mailerService.sendMail({
+            to: email,
+            from: 'howell12@ethereal.email',
+            subject: 'Recuperação de senha',
+            template: 'forget',
+            context: {
+                name: user.nome,
+                token: token,
+            },
+        });
+        return { sucesso: true };
     }
 
     async reset(password: string, token: string) {
         // TO DO: Validar o token
-
-        const { id } = this.verifyToken(token);
-        if (!id) {
-            throw new UnauthorizedException('Token inválido');
+        try {
+            const { id } = this.jwtService.verify<User>(token, {
+                issuer: 'forget',
+                audience: 'users',
+            });
+            password = await bcrypt.hash(password, await bcrypt.genSalt());
+            const user = await this.prisma.user.update({
+                where: {
+                    id,
+                },
+                data: {
+                    senha: password,
+                },
+            });
+            return this.generateToken(user);
+        } catch (error) {
+            throw new BadRequestException(error);
         }
-
-        const user = await this.prisma.user.update({
-            where: {
-                id,
-            },
-            data: {
-                senha: password,
-            },
-        });
-        return this.generateToken(user);
     }
 
     async register(data: AuthRegisterDto) {

@@ -1,40 +1,49 @@
 @baseUrl = http://localhost:3000
-@id = 7a4384b6-63cf-4264-bdec-9ab4c29d9582
+@id = e9d42236-1b12-46f4-8dac-6796008ac1fa
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNDM4NGI2LTYzY2YtNDI2NC1iZGVjLTlhYjRjMjlkOTU4MiIsIm5vbWUiOiJBbGV4IENyb2NldHRpIiwiZW1haWwiOiJhbGV4QGNyb2NldHRpLmNvbS5iciIsImlhdCI6MTc0MzI1MDIxNiwiZXhwIjoxNzQzODU1MDE2LCJhdWQiOiJ1c2VycyIsImlzcyI6ImxvZ2luIiwic3ViIjoiN2E0Mzg0YjYtNjNjZi00MjY0LWJkZWMtOWFiNGMyOWQ5NTgyIn0.DwT4ZDhlmrRIGk14CR1VwIsQ_F4nQJum4vwmALH7cvA
+
 ###
 POST  {{baseUrl}}/users
 Content-Type: application/json
-    
+Authorization: Baere {{token}}  
+
 {
-    "nome": "Alex Crocetti",
-    "email": "alex@crocetti.com.br",
-    "senha": "password123"
+    "nome": "Bianca Crocetti",
+    "email": "bianca@crocetti.com.br",
+    "senha": "12345678"
 }
 
 ###
 GET {{baseUrl}}/users
+Authorization: Baere {{token}}
 
 ###
 GET {{baseUrl}}/users/{{id}}
-
+Authorization: Baere {{token}}
 
 ###
 PUT {{baseUrl}}/users/{{id}}
 Content-Type: application/json
+Authorization: Baere {{token}}
 
 {
     "nome": "Alex Crocetti",
     "email": "alex@crocetti.com.br",
-    "senha": "passffsss"
+    "senha": "12345678",
+    "birthAt": "1963-06-05",
+    "role": "Admin"
     
 }
 
 ###
 PATCH {{baseUrl}}/users/{{id}}
 Content-Type: application/json
+Authorization: Baere {{token}}
 
 {
-    "email": "alex@crocetti.com.br"
+    "senha": "12345678"
 }
 
 ###
-DELETE {{baseUrl}}/users/{{id}}
+DELETE {{baseUrl}}/users/bcc4e536-b76c-46d5-9e05-706cd02e8e90
+Authorization: Baere {{token}}

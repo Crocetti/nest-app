@@ -1,13 +1,13 @@
 @baseUrl = http://localhost:3000
 @id = 7a4384b6-63cf-4264-bdec-9ab4c29d9582
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJkNDlkYmRkLTNiOTAtNGU4Yi05ZGQ0LTRlZWQ3Y2EzMjY2ZiIsIm5vbWUiOiJKb2huIERvZSIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsImlhdCI6MTc0MzE2ODI2NywiZXhwIjoxNzQzNzczMDY3LCJhdWQiOiJ1c2VycyIsImlzcyI6ImxvZ2luIiwic3ViIjoiMmQ0OWRiZGQtM2I5MC00ZThiLTlkZDQtNGVlZDdjYTMyNjZmIn0.n6YPOyYulaQtvNjwTHDovdqu--HFCUAFueeHYGlUpgE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNDM4NGI2LTYzY2YtNDI2NC1iZGVjLTlhYjRjMjlkOTU4MiIsIm5vbWUiOiJBbGV4IENyb2NldHRpIiwiZW1haWwiOiJhbGV4QGNyb2NldHRpLmNvbS5iciIsImlhdCI6MTc0MzQ0NDYzMSwiZXhwIjoxNzQ0MDQ5NDMxLCJhdWQiOiJ1c2VycyIsImlzcyI6ImxvZ2luIiwic3ViIjoiN2E0Mzg0YjYtNjNjZi00MjY0LWJkZWMtOWFiNGMyOWQ5NTgyIn0.eKEO7G_qJNfLgKh6CtohW8i3CQhYRRKmZu1izXf8fF4
 ###
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "john@example.com",
-    "senha": "password123"
+    "email": "alex@crocetti.com.br",
+    "senha": "123456789"
 }
 
 ###
@@ -15,9 +15,20 @@ POST {{baseUrl}}/auth/register
 
 ###
 POST {{baseUrl}}/auth/forget 
+Content-Type: application/json
+
+{
+    "email": "alex@crocetti.com.br"
+}
 
 ###
 POST {{baseUrl}}/auth/reset
+Content-Type: application/json
+
+{
+    "senha": "123456789",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNDM4NGI2LTYzY2YtNDI2NC1iZGVjLTlhYjRjMjlkOTU4MiIsImlhdCI6MTc0MzQ0NDAxNCwiZXhwIjoxNzQzNDQ1ODE0LCJhdWQiOiJ1c2VycyIsImlzcyI6ImZvcmdldCIsInN1YiI6IjdhNDM4NGI2LTYzY2YtNDI2NC1iZGVjLTlhYjRjMjlkOTU4MiJ9.m8vSDNmjHVikdI_7wtfSYW0t-9fP_tZLFhrQBHjABCE"
+}
 
 ###
 POST {{baseUrl}}/auth/verify
@@ -28,5 +39,34 @@ POST {{baseUrl}}/auth/verify
 Authorization: Bearer ""
 
 ###
-POST {{baseUrl}}/auth/amem
+POST {{baseUrl}}/auth/photo
 Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="file"; filename="chat1.svg"
+Content-Type: image/svg
+
+< ./chat1.svg
+
+--MfnBoundry--
+
+###
+POST {{baseUrl}}/auth/files
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="files"; filename="chat1.svg"
+Content-Type: image/svg
+
+< ./chat1.svg
+
+--MfnBoundry
+Content-Disposition: form-data; name="files"; filename="chat2.svg"
+Content-Type: image/svg
+
+< ./chat2.svg
+
+--MfnBoundry--
+
